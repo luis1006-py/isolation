@@ -3,6 +3,7 @@ from modules.colores import Fore
 from modules.netplancfg import obtenerInterfaces, configFicheroIN, aplicarNetplan
 from modules.vlans import configNotPerma, configPerma
 from modules.dhcp import aplicarDHCP, reservaIN, subnetIN, poolIN, claseIN, formatDHCP
+from modules.dns import zonainversaIN, zonaDirectaIN, addRegisterIN, configBDIN
 
 def comando_disponible(comando):
 	return shutil.which(comando) is not None
@@ -14,6 +15,7 @@ MENÚ  PRINCIPAL
 1.- Ayuda con Netplan
 2.- Instalación de VLAN
 3.- Configuración de DHCP (Servidor)
+4.- Configuración de DNS
 ====================================
 """
 
@@ -64,9 +66,8 @@ if __name__ == '__main__':
 	if not os.geteuid() == 0:
 		print(Fore.AMARILLO+"¡Script abierto sin permisos de SUDO! Algunas funciones no podrían funcionar."+Fore.RESET)
 		time.sleep(2)
-	print("Verificando paquetes...")
-
-	check()
+	#print("Verificando paquetes...")
+	#check()
 	print (banner)
 	while True:
 		print (menu)
@@ -150,6 +151,33 @@ if __name__ == '__main__':
 					aplicarDHCP()
 				elif y == "q":
 					break
+		elif x == "4":
+			while True:
+				print("======================")
+				print("0.- Borrar fichero")
+				print("1.- Crear zona directa")
+				print("2.- Crear zona inversa")
+				print("3.- Configurar zona")
+				print("4.- Agregar registro")
+				print("5.- Mover BD")
+				print("6.- Aplicar cambios")
+				print("7.- Salir")
+				print("======================")
+
+				x = input("Selección > ")
+				if x == "1":
+					zonaDirectaIN()
+				elif x == "2":
+					zonainversaIN()
+				elif x == "3":
+					name = input("Introduce el nombre del fichero DB > ")
+					configBDIN(name)
+				elif x == "4":
+					name = input("Introduce el nombre del fichero DB > ")
+					addRegisterIN(name)
+				elif x == "5":
+					break
+
 
 def menu_extra(): # Nota esto está en mantenimiento, no se aconseja su uso
 	while True:
